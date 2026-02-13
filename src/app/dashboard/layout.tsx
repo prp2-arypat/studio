@@ -126,7 +126,6 @@ export default function DashboardLayout({
 
     const menuItems = [
         { href: '/dashboard', label: 'Dashboard', icon: LayoutGrid },
-        { href: '#', label: 'Decisions', icon: Wallet },
         { href: '/dashboard/simulation', label: 'Simulation', icon: LineChart },
         { href: '/dashboard/truth-mode', label: 'Truth Mode', icon: CheckSquare },
         { href: '/dashboard/expert-help', label: 'Expert Help', icon: MessageSquare },
