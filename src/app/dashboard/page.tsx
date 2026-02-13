@@ -25,6 +25,7 @@ const formSchema = z.object({
   targetRetirementAge: z.coerce.number().min(18, "Retirement age must be at least 18.").max(100),
   expectedAnnualReturn: z.coerce.number().min(0, "Return must be positive.").max(100),
   decisionType: z.enum(['Loan', 'Purchase']),
+  decisionName: z.string().min(1, "Please enter a name for your decision."),
   plannedAmount: z.coerce.number().min(1, "Amount must be positive."),
   loanDurationYears: z.coerce.number().min(0, "Duration must be positive."),
 }).refine(data => data.targetRetirementAge > data.currentAge, {
@@ -57,6 +58,7 @@ export default function DashboardPage() {
       targetRetirementAge: 60,
       expectedAnnualReturn: 12,
       decisionType: 'Loan',
+      decisionName: "New Car",
       plannedAmount: 10000,
       loanDurationYears: 5,
     },

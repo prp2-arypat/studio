@@ -9,6 +9,7 @@ export interface SimulationInput {
   targetRetirementAge: number;
   expectedAnnualReturn: number;
   decisionType: 'Loan' | 'Purchase';
+  decisionName: string;
   plannedAmount: number;
   loanDurationYears: number;
 }

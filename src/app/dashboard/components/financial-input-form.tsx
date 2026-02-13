@@ -147,6 +147,20 @@ export function FinancialInputForm({ form, onSubmit, isSimulating }: FinancialIn
                   )}
                 />
 
+                <FormField
+                  control={form.control}
+                  name="decisionName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Decision Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="e.g., New Bike, Home Downpayment" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
                 <FormField control={form.control} name="plannedAmount" render={({ field }) => (
                     <FormItem>
                     <FormLabel>{decisionType === 'Loan' ? 'Monthly EMI Amount' : 'Purchase Amount'}</FormLabel>
