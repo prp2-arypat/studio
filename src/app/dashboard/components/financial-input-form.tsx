@@ -132,7 +132,7 @@ export function FinancialInputForm({ form, onSubmit, isSimulating }: FinancialIn
                         <FormItem>
                             <FormLabel>Decision Type</FormLabel>
                             <FormControl>
-                            <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex space-x-4 pt-2">
+                            <RadioGroup onValueChange={field.onChange} value={field.value} className="flex space-x-4 pt-2">
                                 <FormItem className="flex items-center space-x-2 space-y-0">
                                 <FormControl><RadioGroupItem value="Loan" /></FormControl>
                                 <FormLabel className="font-normal">Loan / New EMI</FormLabel>
