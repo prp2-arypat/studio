@@ -52,9 +52,9 @@ export default function DashboardPage() {
       <div>
         <h1 className="font-headline text-3xl font-bold">Welcome back, {user?.displayName || "User"}!</h1>
         <p className="text-lg text-muted-foreground">Here’s your financial command center.</p>
-        <p className="text-md mt-2 italic text-muted-foreground">
+        <blockquote className="mt-4 border-l-4 border-primary pl-4 italic text-lg text-foreground/80">
           &quot;Wealth is the ability to fully experience life.&quot;
-        </p>
+        </blockquote>
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
