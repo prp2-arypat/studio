@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -74,6 +75,7 @@ export default function SettingsPage() {
     setIsProfileLoading(true);
     try {
       await updateProfile(user, { displayName: values.displayName });
+      await user.reload(); // Manually trigger a refresh of the user object
       toast({
         title: 'Success',
         description: 'Your profile has been updated.',

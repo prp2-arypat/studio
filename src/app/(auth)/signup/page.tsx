@@ -1,3 +1,4 @@
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -68,6 +69,7 @@ export default function SignupPage() {
       const user = userCredential.user;
       
       await updateProfile(user, { displayName: values.displayName });
+      await user.reload(); // Ensure the profile update is reflected immediately
       
       const userDocRef = doc(firestore, "users", user.uid);
       setDocumentNonBlocking(userDocRef, {
