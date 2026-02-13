@@ -19,6 +19,7 @@ import {
   LogOut,
   ShieldCheck,
   Menu,
+  Cog,
 } from 'lucide-react';
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -155,6 +156,7 @@ export default function DashboardLayout({
         { href: '/dashboard/simulation', label: 'Simulation', icon: LineChart },
         { href: '/dashboard/truth-mode', label: 'Truth Mode', icon: ShieldCheck },
         { href: '/dashboard/expert-help', label: 'Expert Help', icon: MessageSquare },
+        { href: '/dashboard/settings', label: 'Settings', icon: Cog },
     ];
     
     const pageTitleRaw = pathname.split('/').pop()?.replace('-', ' ') || 'Dashboard';
@@ -188,14 +190,16 @@ export default function DashboardLayout({
                     </SidebarContent>
                     <SidebarFooter>
                       <div className="flex items-center gap-3 p-3">
-                        <Avatar className="h-10 w-10">
-                            <AvatarImage src={user?.photoURL || undefined} alt={user?.displayName || "User"} />
-                            <AvatarFallback>{userInitial}</AvatarFallback>
-                        </Avatar>
-                        <div className="flex flex-col overflow-hidden">
-                            <span className="truncate text-sm font-semibold text-sidebar-foreground">{user?.displayName || 'User'}</span>
-                            <span className="truncate text-xs text-muted-foreground">{user?.email}</span>
-                        </div>
+                        <Link href="/dashboard/settings" className="flex items-center gap-3 flex-1 overflow-hidden group">
+                          <Avatar className="h-10 w-10">
+                              <AvatarImage src={user?.photoURL || undefined} alt={user?.displayName || "User"} />
+                              <AvatarFallback>{userInitial}</AvatarFallback>
+                          </Avatar>
+                          <div className="flex flex-col overflow-hidden">
+                              <span className="truncate text-sm font-semibold text-sidebar-foreground group-hover:text-sidebar-primary">{user?.displayName || 'User'}</span>
+                              <span className="truncate text-xs text-muted-foreground">{user?.email}</span>
+                          </div>
+                        </Link>
                          <Button variant="ghost" size="icon" className="ml-auto text-sidebar-foreground/70 hover:text-sidebar-foreground" onClick={handleLogout} tooltip="Log Out">
                             <LogOut className="h-5 w-5" />
                         </Button>
