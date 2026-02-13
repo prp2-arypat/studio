@@ -118,6 +118,29 @@ export default function DashboardLayout({
     const pathname = usePathname();
     const auth = useAuth();
     const { user } = useUser();
+    const [isDarkMode, setIsDarkMode] = useState(false);
+
+    useEffect(() => {
+        const theme = localStorage.getItem('theme');
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+            setIsDarkMode(true);
+        } else {
+            document.documentElement.classList.remove('dark');
+            setIsDarkMode(false);
+        }
+    }, []);
+
+    const handleThemeChange = (checked: boolean) => {
+        setIsDarkMode(checked);
+        if (checked) {
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+        }
+    };
 
     const handleLogout = async () => {
         await signOut(auth);
@@ -186,7 +209,7 @@ export default function DashboardLayout({
                         <h1 className="font-headline text-2xl font-bold capitalize tracking-tight">{pageTitle}</h1>
                         <div className="ml-auto flex items-center gap-4">
                             <div className="flex items-center space-x-2">
-                                <Switch id="dark-mode-toggle" disabled />
+                                <Switch id="dark-mode-toggle" checked={isDarkMode} onCheckedChange={handleThemeChange} />
                                 <Label htmlFor="dark-mode-toggle" className="text-sm text-muted-foreground">Dark Mode</Label>
                             </div>
                         </div>
