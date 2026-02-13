@@ -41,8 +41,8 @@ const aiFinancialInsightPrompt = ai.definePrompt({
   name: 'aiFinancialInsightPrompt',
   input: {schema: AIFinancialInsightInputSchema},
   output: {schema: AIFinancialInsightStructuredOutputSchema},
-  prompt: `You are a supportive, non-judgmental financial advisor. Based on the following financial data, provide a personalized explanation of the impact of the user's financial decision on their retirement. Your explanation should be easy for a 16-year-old to understand, be limited to 200 words, and cover the following points.
-Respond with a JSON object that matches the provided schema.
+  prompt: `You are a supportive, non-judgmental financial advisor. Based on the following financial data, provide a concise, personalized explanation of the impact of the user's financial decision on their retirement. Your explanation should be easy for a 16-year-old to understand and limited to a maximum of 150 words.
+Return ONLY raw JSON that matches the provided schema. Do not include markdown formatting or backticks.
 
 User Financial Data:
 Income: ₹{{{income}}}
