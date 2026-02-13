@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useUser } from "@/firebase";
 import { useRouter } from "next/navigation";
-import { Loader2, TrendingUp, ShieldCheck } from "lucide-react";
+import { Loader2, TrendingUp, ShieldCheck, Zap } from "lucide-react";
 import { SummaryCard } from "./components/summary-card";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
@@ -52,17 +52,20 @@ export default function DashboardPage() {
       <div>
         <h1 className="font-headline text-3xl font-bold">Welcome back, {user?.displayName || "User"}!</h1>
         <p className="text-lg text-muted-foreground">Here’s your financial command center.</p>
+        <p className="text-md mt-2 italic text-muted-foreground">
+          &quot;Wealth is the ability to fully experience life.&quot;
+        </p>
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        <SummaryCard isLoading={isSimLoading} title="Projected Retirement Corpus" value={`₹${corpusBefore.toLocaleString('en-IN', { maximumFractionDigits: 0 })}`} description="Your potential wealth at retirement." icon={TrendingUp} />
-        <SummaryCard isLoading={isSimLoading} title="Financial Health" value={`Good`} description="Based on your savings & debt." icon={ShieldCheck} />
-        <SummaryCard isLoading={isSimLoading} title="Next Smart Step" value="Review Plan" description="Check AI insights for opportunities" icon={ShieldCheck} />
+        <SummaryCard isLoading={isSimLoading} title="Projected Retirement Corpus" value={`₹${corpusBefore.toLocaleString('en-IN', { maximumFractionDigits: 0 })}`} description="Live from your simulation profile." icon={TrendingUp} />
+        <SummaryCard isLoading={isSimLoading} title="Financial Health" value={`Good`} description="Live from your simulation profile." icon={ShieldCheck} />
+        <SummaryCard isLoading={isSimLoading} title="Next Smart Step" value="Run Simulation" description="Check AI insights for opportunities" icon={Zap} />
       </div>
 
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           <AIInsightCard insight={"Run a simulation to get your personalized AI financial insight."} isLoading={isSimLoading}/>
-          <Card className="rounded-2xl flex flex-col justify-center">
+          <Card className="flex flex-col justify-center rounded-2xl">
             <CardHeader>
               <CardTitle className="font-headline text-2xl">Take Control</CardTitle>
               <CardDescription>
