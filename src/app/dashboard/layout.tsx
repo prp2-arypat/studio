@@ -49,12 +49,13 @@ export default function DashboardLayout({
     const menuItems = [
         { href: '/dashboard', label: 'Dashboard', icon: LayoutGrid },
         { href: '#', label: 'Decisions', icon: Wallet },
-        { href: '/dashboard', label: 'Simulation', icon: LineChart },
+        { href: '/dashboard/simulation', label: 'Simulation', icon: LineChart },
         { href: '/dashboard/truth-mode', label: 'Truth Mode', icon: CheckSquare },
         { href: '#', label: 'Expert Help', icon: MessageSquare },
     ];
     
-    const pageTitle = pathname.split('/').pop()?.replace('-', ' ') || 'Dashboard';
+    const pageTitleRaw = pathname.split('/').pop()?.replace('-', ' ') || 'Dashboard';
+    const pageTitle = pageTitleRaw === 'dashboard' ? 'Dashboard' : pageTitleRaw;
 
     return (
         <SidebarProvider>
