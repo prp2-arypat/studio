@@ -216,8 +216,8 @@ export default function SimulationPage() {
     runSimulation(data);
   };
   
-  const loadSimulation = (data: SimulationInput) => {
-    form.reset(data);
+  const handleRerun = (data: SimulationInput) => {
+    // Only run the simulation, don't reset the form
     runSimulation(data);
   };
 
@@ -245,7 +245,7 @@ export default function SimulationPage() {
                         <SimulationResults result={result} isLoading={isSimulating && !result} />
                     </TabsContent>
                     <TabsContent value="history" className="mt-4">
-                        <PastSimulations userId={user.uid} onLoad={loadSimulation} simulationCount={simulationCount} isSimulating={isSimulating} />
+                        <PastSimulations userId={user.uid} onRerun={handleRerun} simulationCount={simulationCount} isSimulating={isSimulating} />
                     </TabsContent>
                 </Tabs>
             </div>
