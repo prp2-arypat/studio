@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { FinancialInputForm } from "./components/financial-input-form";
@@ -11,10 +11,11 @@ import { calculateRetirement, calculateRetirementDelay, calculateStress } from "
 import { getAIFinancialInsight } from "@/ai/flows/ai-financial-insight";
 import { useUser, useFirestore, addDocumentNonBlocking } from "@/firebase";
 import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
+import { Loader2, Landmark, Wallet, HeartPulse } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { PastSimulations } from "./components/past-simulations";
 import { collection, Timestamp } from "firebase/firestore";
+import { SummaryCard } from "./components/summary-card";
 
 const formSchema = z.object({
   monthlyIncome: z.coerce.number().min(0, "Monthly income must be positive."),
@@ -43,7 +44,7 @@ export default function DashboardPage() {
   const { toast } = useToast();
 
   const [result, setResult] = useState<SimulationResult | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSimulating, setIsSimulating] = useState(false);
   const [simulationCount, setSimulationCount] = useState(0);
   const isRunningRef = useRef(false);
 
@@ -68,7 +69,7 @@ export default function DashboardPage() {
     if (isRunningRef.current) return;
 
     isRunningRef.current = true;
-    setIsLoading(true);
+    setIsSimulating(true);
 
     try {
         // --- START OF LOCAL CALCULATION ---
@@ -185,7 +186,7 @@ export default function DashboardPage() {
             description: e.message || "Could not generate AI insight or save simulation.",
         });
     } finally {
-        setIsLoading(false);
+        setIsSimulating(false);
         isRunningRef.current = false;
     }
   }, [user, toast, firestore]);
@@ -195,6 +196,10 @@ export default function DashboardPage() {
       router.replace("/");
     }
   }, [user, authLoading, router]);
+
+  const watchedIncome = useWatch({ control: form.control, name: 'monthlyIncome' });
+  const watchedEmis = useWatch({ control: form.control, name: 'existingEmis' });
+
 
   if (authLoading || !user) {
     return (
@@ -214,16 +219,22 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="grid grid-cols-1 gap-8 lg:grid-cols-5">
-      <div className="lg:col-span-2">
-        <div className="space-y-8">
-            <FinancialInputForm form={form} onSubmit={handleRunSimulation} isSimulating={isLoading} />
-            <PastSimulations userId={user.uid} onLoad={loadSimulation} simulationCount={simulationCount} isSimulating={isLoading} />
+    <div className="space-y-6">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+             <SummaryCard title="Monthly Income" value={`₹${(watchedIncome || 0).toLocaleString('en-IN')}`} description="Your total income per month." icon={Landmark} />
+             <SummaryCard title="Total Monthly EMI" value={`₹${(watchedEmis || 0).toLocaleString('en-IN')}`} description="Sum of all monthly payments." icon={Wallet} />
+             <SummaryCard title="Savings Health" value="0.0 months" description="Below recommended 3-6 months cover" icon={HeartPulse} />
         </div>
-      </div>
-      <div className="lg:col-span-3">
-        <SimulationResults result={result} isLoading={isLoading} isAiLoading={isLoading} />
-      </div>
+
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+            <div className="space-y-8">
+                <FinancialInputForm form={form} onSubmit={handleRunSimulation} isSimulating={isSimulating} />
+                <PastSimulations userId={user.uid} onLoad={loadSimulation} simulationCount={simulationCount} isSimulating={isSimulating} />
+            </div>
+            <div>
+                <SimulationResults result={result} isLoading={isSimulating} isAiLoading={isSimulating} />
+            </div>
+        </div>
     </div>
   );
 }
