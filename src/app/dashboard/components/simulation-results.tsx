@@ -6,7 +6,6 @@ import { StressIndicator } from "./stress-indicator";
 import { RetirementChart } from "./retirement-chart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TrendingDown, TrendingUp, LineChart, AlertTriangle } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AIInsightCard } from "./ai-insight-card";
 
 interface SimulationResultsProps {
@@ -83,6 +82,18 @@ export function SimulationResults({ result, isLoading }: SimulationResultsProps)
                 </CardHeader>
             </Card>
         )}
+
+        <Card className="rounded-2xl">
+            <CardHeader>
+                <CardTitle className="font-headline text-2xl">Your Future Wealth Projection</CardTitle>
+                <CardDescription>
+                This chart shows your wealth growth over time, with and without your planned decision.
+                </CardDescription>
+            </CardHeader>
+            <CardContent>
+                <RetirementChart data={result.chartData} isLoading={isLoading} />
+            </CardContent>
+        </Card>
 
         <Card className="rounded-2xl">
             <CardHeader>
