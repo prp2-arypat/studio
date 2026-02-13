@@ -143,6 +143,10 @@ export default function DashboardLayout({
             localStorage.setItem('theme', 'light');
         }
     };
+    
+    const handleLogout = async () => {
+        await signOut(auth);
+    };
 
     const userInitial = user?.email?.[0].toUpperCase() || '?';
 
