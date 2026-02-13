@@ -119,6 +119,7 @@ export default function DashboardLayout({
     const auth = useAuth();
     const { user } = useUser();
     const [isDarkMode, setIsDarkMode] = useState(false);
+    const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
         const theme = localStorage.getItem('theme');
@@ -129,6 +130,7 @@ export default function DashboardLayout({
             document.documentElement.classList.remove('dark');
             setIsDarkMode(false);
         }
+        setMounted(true);
     }, []);
 
     const handleThemeChange = (checked: boolean) => {
@@ -140,11 +142,6 @@ export default function DashboardLayout({
             document.documentElement.classList.remove('dark');
             localStorage.setItem('theme', 'light');
         }
-    };
-
-    const handleLogout = async () => {
-        await signOut(auth);
-        router.push("/");
     };
 
     const userInitial = user?.email?.[0].toUpperCase() || '?';
@@ -208,7 +205,7 @@ export default function DashboardLayout({
                         </SidebarTrigger>
                         <h1 className="font-headline text-2xl font-bold capitalize tracking-tight">{pageTitle}</h1>
                         <div className="ml-auto flex items-center gap-4">
-                            <div className="flex items-center space-x-2">
+                            <div className="flex items-center space-x-2" style={{ visibility: mounted ? 'visible' : 'hidden' }}>
                                 <Switch id="dark-mode-toggle" checked={isDarkMode} onCheckedChange={handleThemeChange} />
                                 <Label htmlFor="dark-mode-toggle" className="text-sm text-muted-foreground">Dark Mode</Label>
                             </div>
