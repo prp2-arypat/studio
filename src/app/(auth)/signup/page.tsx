@@ -15,7 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useAuth, useFirestore, useUser, setDocumentNonBlocking } from "@/firebase";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
@@ -24,6 +24,7 @@ import { Loader2 } from "lucide-react";
 import { doc } from "firebase/firestore";
 
 const formSchema = z.object({
+  displayName: z.string().min(2, "Name must be at least 2 characters."),
   email: z.string().email({
     message: "Please enter a valid email address.",
   }),
@@ -47,6 +48,7 @@ export default function SignupPage() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      displayName: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -64,6 +66,8 @@ export default function SignupPage() {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
       const user = userCredential.user;
+      
+      await updateProfile(user, { displayName: values.displayName });
       
       const userDocRef = doc(firestore, "users", user.uid);
       setDocumentNonBlocking(userDocRef, {
@@ -95,11 +99,24 @@ export default function SignupPage() {
     <Card className="rounded-2xl">
       <CardHeader>
         <CardTitle className="font-headline text-3xl">Create an account</CardTitle>
-        <CardDescription>Enter your email and password to get started.</CardDescription>
+        <CardDescription>Enter your details below to create your account.</CardDescription>
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <CardContent className="space-y-4">
+            <FormField
+              control={form.control}
+              name="displayName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Your Name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="email"
