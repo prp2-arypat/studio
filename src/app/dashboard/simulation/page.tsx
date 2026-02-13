@@ -165,24 +165,23 @@ export default function SimulationPage() {
         };
         const insight = await getAIFinancialInsight(aiInput);
         
-        setResult(prev => {
-            const newResult = prev ? { ...prev, aiInsight: insight } : null;
-            if (newResult && user) {
-                const simulationsCollectionRef = collection(firestore, 'users', user.uid, 'financialSimulations');
-                addDocumentNonBlocking(simulationsCollectionRef, {
-                    userId: user.uid,
-                    inputs: data,
-                    results: newResult,
-                    timestamp: Timestamp.now(),
-                });
-                setSimulationCount(prev => prev + 1);
-                toast({
-                    title: "Simulation Saved",
-                    description: "Your simulation has been saved to your history.",
-                });
-            }
-            return newResult;
-        });
+        const finalResult = { ...simulationResult, aiInsight: insight };
+        setResult(finalResult);
+
+        if (user) {
+            const simulationsCollectionRef = collection(firestore, 'users', user.uid, 'financialSimulations');
+            addDocumentNonBlocking(simulationsCollectionRef, {
+                userId: user.uid,
+                inputs: data,
+                results: finalResult,
+                timestamp: Timestamp.now(),
+            });
+            setSimulationCount(prev => prev + 1);
+            toast({
+                title: "Simulation Saved",
+                description: "Your simulation has been saved to your history.",
+            });
+        }
 
     } catch (e: any) {
         console.error(e);
