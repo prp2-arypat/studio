@@ -4,7 +4,6 @@ import type { SimulationResult } from "@/lib/types";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { StressIndicator } from "./stress-indicator";
 import { RetirementChart } from "./retirement-chart";
-import { AIInsightCard } from "./ai-insight-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TrendingDown, TrendingUp, LineChart } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -12,7 +11,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 interface SimulationResultsProps {
   result: SimulationResult | null;
   isLoading: boolean;
-  isAiLoading: boolean;
 }
 
 const formatCurrency = (value: number) => {
@@ -23,7 +21,7 @@ const formatCurrency = (value: number) => {
   }).format(value);
 };
 
-export function SimulationResults({ result, isLoading, isAiLoading }: SimulationResultsProps) {
+export function SimulationResults({ result, isLoading }: SimulationResultsProps) {
   if (isLoading && !result) {
     return (
         <div className="space-y-8">
@@ -86,8 +84,6 @@ export function SimulationResults({ result, isLoading, isAiLoading }: Simulation
                     </CardHeader>
                 </Card>
             )}
-
-            <AIInsightCard insight={result.aiInsight} isLoading={isAiLoading} />
         </TabsContent>
         <TabsContent value="projections" className="mt-4 space-y-8">
             <Card>

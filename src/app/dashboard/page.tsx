@@ -85,7 +85,7 @@ export default function DashboardPage() {
       if (latestSimData) {
           form.reset(latestSimData);
       }
-  }, [latestSimData]); // form.reset is stable
+  }, [latestSimData, form.reset]);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -252,7 +252,7 @@ export default function DashboardPage() {
                         <TabsTrigger value="history">Simulation History</TabsTrigger>
                     </TabsList>
                     <TabsContent value="results" className="mt-4">
-                        <SimulationResults result={result} isLoading={isSimulating && !result} isAiLoading={isSimulating && !!result} />
+                        <SimulationResults result={result} isLoading={isSimulating && !result} />
                     </TabsContent>
                     <TabsContent value="history" className="mt-4">
                         <PastSimulations userId={user.uid} onLoad={loadSimulation} simulationCount={simulationCount} isSimulating={isSimulating} />
